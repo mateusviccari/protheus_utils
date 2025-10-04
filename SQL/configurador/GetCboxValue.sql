@@ -11,14 +11,14 @@ BEGIN
     DECLARE @Result VARCHAR(100);
     
     SELECT @Result = tupla.valor 
-    FROM DADOSADV.dbo.SX3010 AS X3
+    FROM PROTHEUS_DB.dbo.SX3010 AS X3
     CROSS APPLY (
-        SELECT Item FROM TIMIGPLUS.dbo.split_string(TRIM(X3_CBOX), ';')
+        SELECT Item FROM MY_DB.dbo.split_string(TRIM(X3_CBOX), ';')
     ) AS itens(chaveValor)
     CROSS APPLY (
         SELECT
-            (SELECT Item FROM TIMIGPLUS.dbo.split_string2(itens.chaveValor, '=') ORDER BY pos OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY) AS chave,
-        	(SELECT Item FROM TIMIGPLUS.dbo.split_string2(itens.chaveValor, '=') ORDER BY pos OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY) AS valor
+            (SELECT Item FROM MY_DB.dbo.split_string2(itens.chaveValor, '=') ORDER BY pos OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY) AS chave,
+        	(SELECT Item FROM MY_DB.dbo.split_string2(itens.chaveValor, '=') ORDER BY pos OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY) AS valor
     ) AS tupla
     WHERE X3.D_E_L_E_T_ = ''
     AND X3.X3_CAMPO = @FIELD_NAME
